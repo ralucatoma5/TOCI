@@ -1,7 +1,9 @@
 #include <iostream>
 #include <cstdlib>
 #include <conio.h>
+#include <iomanip>
 #include <time.h>
+#include <cstring>
 using namespace std;
 int f[52];
 
@@ -11,6 +13,8 @@ struct carte
     int tip;
     carte *leg;
 } *pachet, *pjuc1, *pjuc2;
+
+char sir[100];
 char cval[13][10] = {"as", "doi", "trei", "patru", "cinci", "sase", "sapte", "opt", "noua", "zece", "valet", "dama", "popa"};
 char ctip[4][15] = {"inima rosie", "inima neagra", "trefla", "romb"};
 
@@ -106,12 +110,42 @@ int front(carte *p)
     return p->val - 1;
 }
 
-void parcurgere(carte *prim)
+void afis(char sir[], int lat, char x)
 {
-    while (prim)
+    if (x == 'l')
     {
-        cout << cval[prim->val - 1] << " " << ctip[prim->tip] << endl;
-        prim = prim->leg;
+        cout << sir;
+        for (int i = 1; i <= lat - strlen(sir); i++)
+            cout << " ";
+    }
+}
+
+void parcurgere(carte *prim1, carte *prim2)
+{
+    while (prim1 || prim2)
+    {
+        if (prim1)
+        {
+            strcpy(sir, cval[prim1->val - 1]);
+            strcat(sir, " ");
+            strcat(sir, ctip[prim1->tip]);
+            afis(sir, 30, 'l');
+            prim1 = prim1->leg;
+        }
+        else
+            afis(" ", 30, 'l');
+
+        if (prim2)
+        {
+            strcpy(sir, cval[prim2->val - 1]);
+            strcat(sir, " ");
+            strcat(sir, ctip[prim2->tip]);
+            afis(sir, 30, 'l');
+            prim2 = prim2->leg;
+        }
+        else
+            afis(" ", 30, 'l');
+        cout << "\n";
     }
 }
 
@@ -120,6 +154,7 @@ int v[60], k;
 int main()
 {
 
+    int nr = 0;
     srand(time(NULL));
 
     pachet = creare();
@@ -127,23 +162,39 @@ int main()
 
     do
     {
-        cout << "jucator 1: \n";
-        parcurgere(pjuc1);
+
+        afis("jucator 1:", 30, 'l');
+        afis("jucator 2:", 30, 'l');
+        cout << endl;
+        if (nr == 0)
+            parcurgere(pjuc1, pjuc2);
+        else
+        {
+            strcpy(sir, cval[pjuc1->val - 1]);
+            strcat(sir, " ");
+            strcat(sir, ctip[pjuc1->tip]);
+            afis(sir, 30, 'l');
+
+            strcpy(sir, cval[pjuc2->val - 1]);
+            strcat(sir, " ");
+            strcat(sir, ctip[pjuc2->tip]);
+            afis(sir, 30, 'l');
+        }
+        nr++;
         cout << "\n";
-        cout << "jucator 2: \n";
-        parcurgere(pjuc2);
-        cout << "\n";
-        cout << "parte jos: " << cval[v[k]];
+        cout << "carte jos: " << cval[v[k]];
         cout << "\n";
         bool ok = false;
         // cand jucatorii pun cartile jos
         if (pjuc1->val - 1 == v[k])
         {
+            v[++k] = pjuc1->val;
             pop(pjuc1);
             ok = true;
         }
         else if (pjuc2->val - 1 == v[k])
         {
+            v[++k] = pjuc2->val;
             pop(pjuc2);
             ok = true;
         }
@@ -169,6 +220,7 @@ int main()
             pop(pjuc1);
             pop(pjuc2);
         }
+        // system("cls");
         getch();
     } while (pjuc1 && pjuc2);
 
