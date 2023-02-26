@@ -162,14 +162,20 @@ int main()
 
     do
     {
-
+        if (nr == 0)
+            cout << "Incepe jocul \nPachetele jucatorilor sunt: \n \n";
+        else
+            cout << "Fiecare jucator intoarce ultima carte si o pune jos: \n \n";
         afis("jucator 1:", 30, 'l');
         afis("jucator 2:", 30, 'l');
         cout << endl;
         if (nr == 0)
+        {
             parcurgere(pjuc1, pjuc2);
+        }
         else
         {
+
             strcpy(sir, cval[pjuc1->val - 1]);
             strcat(sir, " ");
             strcat(sir, ctip[pjuc1->tip]);
@@ -182,7 +188,7 @@ int main()
         }
         nr++;
         cout << "\n";
-        cout << "carte jos: " << cval[v[k]];
+        cout << "Cartea de jos din pachetul comun: " << cval[v[k]];
         cout << "\n";
         bool ok = false;
         // cand jucatorii pun cartile jos
@@ -198,16 +204,22 @@ int main()
             pop(pjuc2);
             ok = true;
         }
-        /* datul cartilor intre juc
-        if(front(pjuc1) == v[k] + 1){
-            v[++k] = front(pjuc1);
+        // datul cartilor intre juc
+        // cartea mare in pachetul cu cartea cu 1 mai mica
+        if (pjuc1->val == pjuc2->val + 1)
+        {
+            push(pjuc1->val, pjuc1->tip, pjuc1);
+            push(pjuc2->val, pjuc2->tip, pjuc1);
             pop(pjuc1);
-            ok = true;
-    }else if(front(pjuc2) == v[k] + 1){
-            v[++k] = front(pjuc2);
             pop(pjuc2);
-            ok = true;
-        }*/
+        }
+        else if (pjuc1->val + 1 == pjuc2->val)
+        {
+            push(pjuc2->val, pjuc2->tip, pjuc2);
+            push(pjuc1->val, pjuc1->tip, pjuc2);
+            pop(pjuc1);
+            pop(pjuc2);
+        }
         if (v[k] == 14)
             v[++k] = 0;
 
