@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <time.h>
 #include <cstring>
+#include <stdlib.h>
 using namespace std;
 int f[52];
 
@@ -163,9 +164,18 @@ int main()
     do
     {
         if (nr == 0)
-            cout << "Incepe jocul \nPachetele jucatorilor sunt: \n \n";
+        {
+            system("Color 01");
+            cout << "Incepe jocul \n Pachetele jucatorilor sunt: \n \n"
+                 << endl;
+        }
         else
-            cout << "Fiecare jucator intoarce ultima carte si o pune jos: \n \n";
+        {
+            system("Color 01");
+            cout << "Fiecare jucator intoarce ultima carte si o pune jos: \n \n"
+                 << endl;
+        }
+        cout << "\033[96m";
         afis("jucator 1:", 30, 'l');
         afis("jucator 2:", 30, 'l');
         cout << endl;
@@ -188,7 +198,8 @@ int main()
         }
         nr++;
         cout << "\n";
-        cout << "Cartea de jos din pachetul comun: " << cval[v[k]];
+        cout << "\033[95m"
+             << "Cartea de jos din pachetul comun este: " << cval[v[k]];
         cout << "\n";
         bool ok = false;
         // cand jucatorii pun cartile jos
@@ -197,30 +208,42 @@ int main()
             v[++k] = pjuc1->val;
             pop(pjuc1);
             ok = true;
+            cout << "\033[92m"
+                 << "Jucatorul 1 pune cartea in pahetul comun. \n"
+                 << endl;
         }
         else if (pjuc2->val - 1 == v[k])
         {
             v[++k] = pjuc2->val;
             pop(pjuc2);
             ok = true;
+            cout << "\033[92m"
+                 << "Jucatorul 2 pune cartea in pahetul comun. \n"
+                 << endl;
         }
         // datul cartilor intre juc
         // cartea mare in pachetul cu cartea cu 1 mai mica
-        if (pjuc1->val == pjuc2->val + 1)
+        if (pjuc1->val == pjuc2->val + 1 && ok == false)
         {
             push(pjuc1->val, pjuc1->tip, pjuc1);
             push(pjuc2->val, pjuc2->tip, pjuc1);
             pop(pjuc1);
             pop(pjuc2);
+
+            cout << "\033[92m"
+                 << "Jucatorul 2 ii da cartea jucatorului 1 \n";
         }
-        else if (pjuc1->val + 1 == pjuc2->val)
+
+        else if (pjuc1->val + 1 == pjuc2->val && ok == false)
         {
             push(pjuc2->val, pjuc2->tip, pjuc2);
             push(pjuc1->val, pjuc1->tip, pjuc2);
             pop(pjuc1);
             pop(pjuc2);
+            cout << "\033[92m"
+                 << "Jucatorul 1 ii da cartea jucatorului 2 \n";
         }
-        if (v[k] == 14)
+        if (v[k] == 13)
             v[++k] = 0;
 
         if (!ok)
@@ -234,6 +257,11 @@ int main()
         }
         // system("cls");
         getch();
+        if (!pjuc1)
+            cout << "Jucatorul 1 a castigat.";
+        else if (!pjuc2)
+            cout << "Jucatorul 2 a castigat.";
+
     } while (pjuc1 && pjuc2);
 
     return 0;
