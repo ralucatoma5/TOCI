@@ -10,7 +10,7 @@ Joc de cărți, ce necesită doi jucători, câștigătorul este primul care va 
 - Cand se ajunge la ultima valoare a pachetului comun, popa, se incepe din nou cu asul.
 - Jocul se incheie atunci cand unul dintre jucatori ramane fara carti si castiga.
 
-##Echipa
+## Echipa
 
 - Toma Raluca
 - Teodoru Iulia
